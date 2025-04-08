@@ -2,70 +2,111 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Countdown to August 8, 2025</title>
+  <title>Kaylee's Countdown Hub</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap');
 
     body {
       font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(to right, #fcefee, #e8f0ff);
+      margin: 0;
+      padding: 40px 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-      background: linear-gradient(to right, #fcefee, #e8f0ff);
     }
 
     h1 {
-      font-size: 2rem;
-      margin-bottom: 20px;
+      font-size: 2.2rem;
       color: #6c4a84;
+      margin-bottom: 10px;
     }
 
-    #countdown {
-      font-size: 1.8rem;
+    .countdown-container {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      max-width: 600px;
+      width: 100%;
+    }
+
+    .card {
       background: white;
-      padding: 30px 40px;
+      padding: 25px 30px;
       border-radius: 2rem;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-      color: #444;
       text-align: center;
     }
 
-    .highlight {
+    .card h2 {
+      margin: 0 0 10px;
       color: #ff7aa2;
+      font-size: 1.5rem;
+    }
+
+    .countdown {
+      font-size: 1.4rem;
+      color: #444;
+    }
+
+    .highlight {
       font-weight: bold;
+      color: #ff7aa2;
     }
   </style>
 </head>
 <body>
-  <h1>💍 Countdown to <span class="highlight">August 8, 2025</span></h1>
-  <div id="countdown">Loading...</div>
+  <h1>🎓 Kaylee's Countdown Hub</h1>
+
+  <div class="countdown-container">
+    <div class="card">
+      <h2>MBA Graduation (8/8/25)</h2>
+      <div class="countdown" id="gradCountdown">Loading...</div>
+    </div>
+
+    <div class="card">
+      <h2>Commencement Ceremony (5/23/25)</h2>
+      <div class="countdown" id="ceremonyCountdown">Loading...</div>
+    </div>
+
+    <div class="card">
+      <h2>Wedding Day (8/15/26)</h2>
+      <div class="countdown" id="weddingCountdown">Loading...</div>
+    </div>
+  </div>
 
   <script>
-    const countdown = () => {
-      const targetDate = new Date("August 8, 2025 00:00:00").getTime();
-      const now = new Date().getTime();
-      const timeLeft = targetDate - now;
+    function setCountdown(elementId, targetDateStr) {
+      const update = () => {
+        const targetDate = new Date(targetDateStr).getTime();
+        const now = new Date().getTime();
+        const timeLeft = targetDate - now;
 
-      const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+        if (timeLeft < 0) {
+          document.getElementById(elementId).innerHTML = "🎉 It's here!";
+          return;
+        }
 
-      document.getElementById("countdown").innerHTML =
-        `<span class="highlight">${days}</span> days 
-         <span class="highlight">${hours}</span> hours 
-         <span class="highlight">${minutes}</span> minutes 
-         <span class="highlight">${seconds}</span> seconds`;
+        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
-      if (timeLeft < 0) {
-        document.getElementById("countdown").innerHTML = "🎉 It's here, CEO!";
-      }
-    };
+        document.getElementById(elementId).innerHTML =
+          `<span class="highlight">${days}</span> days 
+           <span class="highlight">${hours}</span> hours 
+           <span class="highlight">${minutes}</span> minutes 
+           <span class="highlight">${seconds}</span> seconds`;
+      };
 
-    setInterval(countdown, 1000);
+      update(); // Initial call
+      setInterval(update, 1000);
+    }
+
+    // Setup all countdowns
+    setCountdown("gradCountdown", "August 8, 2025 00:00:00");
+    setCountdown("ceremonyCountdown", "May 23, 2025 00:00:00");
+    setCountdown("weddingCountdown", "August 15, 2026 00:00:00");
   </script>
 </body>
 </html>
