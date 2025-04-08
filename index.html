@@ -56,26 +56,61 @@
   </style>
 </head>
 <body>
-  <h1>🎓 Kaylee's Countdown Hub</h1>
+  <h1>Kaylee's Countdown Hub</h1>
 
-  <div class="countdown-container">
-    <div class="card">
-      <h2>MBA Graduation (8/8/25)</h2>
-      <div class="countdown" id="gradCountdown">Loading...</div>
-    </div>
-
-    <div class="card">
-      <h2>Commencement Ceremony (5/23/25)</h2>
-      <div class="countdown" id="ceremonyCountdown">Loading...</div>
-    </div>
-
-    <div class="card">
-      <h2>Wedding Day (8/15/26)</h2>
-      <div class="countdown" id="weddingCountdown">Loading...</div>
-    </div>
+  <div class="countdown-container" id="countdownContainer">
+    <!-- Countdown cards will be generated here -->
   </div>
 
   <script>
+    const events = [
+      {
+        title: "🎓 Commencement Ceremony (5/23/25)",
+        date: "May 23, 2025 00:00:00",
+        id: "ceremonyCountdown"
+      },
+      {
+        title: "✅ MBA Graduation (8/8/25)",
+        date: "August 8, 2025 00:00:00",
+        id: "gradCountdown"
+      },
+      {
+        title: "💍 Wedding Day (8/15/26)",
+        date: "August 15, 2026 00:00:00",
+        id: "weddingCountdown"
+      }
+    ];
+
+    const countdownContainer = document.getElementById("countdownContainer");
+
+    function calculateDaysLeft(dateStr) {
+      const now = new Date().getTime();
+      const target = new Date(dateStr).getTime();
+      return Math.floor((target - now) / (1000 * 60 * 60 * 24));
+    }
+
+    // Sort by least days left
+    events.sort((a, b) => calculateDaysLeft(a.date) - calculateDaysLeft(b.date));
+
+    // Generate countdown cards
+    events.forEach(event => {
+      const card = document.createElement("div");
+      card.className = "card";
+
+      const heading = document.createElement("h2");
+      heading.textContent = event.title;
+
+      const countdownDiv = document.createElement("div");
+      countdownDiv.className = "countdown";
+      countdownDiv.id = event.id;
+      countdownDiv.textContent = "Loading...";
+
+      card.appendChild(heading);
+      card.appendChild(countdownDiv);
+      countdownContainer.appendChild(card);
+    });
+
+    // Function to update countdown
     function setCountdown(elementId, targetDateStr) {
       const update = () => {
         const targetDate = new Date(targetDateStr).getTime();
@@ -103,10 +138,10 @@
       setInterval(update, 1000);
     }
 
-    // Setup all countdowns
-    setCountdown("gradCountdown", "August 8, 2025 00:00:00");
-    setCountdown("ceremonyCountdown", "May 23, 2025 00:00:00");
-    setCountdown("weddingCountdown", "August 15, 2026 00:00:00");
+    // Initialize all countdowns
+    events.forEach(event => {
+      setCountdown(event.id, event.date);
+    });
   </script>
 </body>
 </html>
